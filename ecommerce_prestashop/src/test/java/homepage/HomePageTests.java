@@ -3,6 +3,7 @@ package homepage;
 import org.junit.jupiter.api.Test; 
 
 import base.BaseTests;
+import pages.LoginPage;
 import pages.ProdutoPage;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -41,6 +42,26 @@ public class HomePageTests extends BaseTests{
 	 
 	 assertThat(nomeProduto_HomePage.toUpperCase(), is (nomeProduto_ProdutoPage.toUpperCase()));
 	 assertThat(precoProduto_HomePage, is(precoProduto_ProdutoPage));
+	}
+	
+	@Test
+	public void testLoginComSucesso_UsuarioEstaLogado() {
+		// clicar no botão signIn (homePage)
+		
+		LoginPage loginPage = homePage.clicarNoBotaoSignInNavBar();
+		
+		//Preencher usuario e senha
+		
+		loginPage.preencherEmail("rafaela@teste.com");
+		loginPage.preencherSenha("rafateste");
+		
+		// clicar no botao SignIn para logar
+		
+		loginPage.clicarBotaoSignInFormulario();
+		
+		//validar se o usuario conseguiu se logar
+		assertThat(homePage.usuarioEstaLogado("Rafaela Oliveira"), is (true));
+	
 	}
 	
 }

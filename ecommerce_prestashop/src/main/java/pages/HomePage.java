@@ -21,6 +21,10 @@ public class HomePage {
 	
 	private By precoDoProduto = By.className("price");
 	
+	private By botaoSignIn = By.cssSelector("#_desktop_user_info span.hidden-sm-down");
+	
+	private By usuarioLogado = By.cssSelector("#_desktop_user_info span.hidden-sm-down");
+	
 	public HomePage (WebDriver driver) {
 		this.driver = driver;
 		
@@ -58,4 +62,15 @@ public class HomePage {
 		driver.findElements(descricaoDoProduto).get(indiceProduto).click();
 		return new ProdutoPage(driver);
 	}
+	
+	public LoginPage clicarNoBotaoSignInNavBar() {
+		driver.findElement(botaoSignIn).click();
+		return new LoginPage(driver);
+	}
+	
+	public boolean usuarioEstaLogado(String texto) {
+		return texto.contentEquals(driver.findElement(usuarioLogado).getText());
+		
+	}
+	
 }
