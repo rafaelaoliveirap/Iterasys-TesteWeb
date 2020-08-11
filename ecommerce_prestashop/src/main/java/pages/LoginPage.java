@@ -29,7 +29,4 @@ public class LoginPage {
 		driver.findElement(botaoSignInFormulario).click();
 	}
 	
-	
-	
-
 }
