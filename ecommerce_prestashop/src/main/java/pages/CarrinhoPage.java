@@ -92,5 +92,9 @@ public class CarrinhoPage {
 	public String obterBotaoProceedToCheckout() {
 		return driver.findElement(botaoProceedToCheckout).getText();
 	}
-
+	
+	public CheckoutPage clicarBotaoProceedToCheckout() {
+		driver.findElement(botaoProceedToCheckout).click();
+		return new CheckoutPage(driver);
+	}
 }
