@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import base.BaseTests;
 import pages.CarrinhoPage;
+import pages.CheckoutPage;
 import pages.LoginPage;
 import pages.ModalProdutoPage;
 import pages.ProdutoPage;
@@ -163,12 +164,17 @@ public class HomePageTests extends BaseTests{
 	Double esperado_TotalTaxasInclusasLateral = esperado_TotalSemTaxasLateral;
 	Double esperado_taxasLateral = 0.00;	
 	
+	Double esperado_valorShipping = 7.00;
+	String esperado_nomeCliente = "Rafaela Oliveira";
+	
+	CarrinhoPage carrinhoPage;
+	
 	@Test
 	public void irParaCarrinho_InformacoesPersistidas() {
 		// pre-condiçoes
 		incluirProdutoNocarrinho_ProdutoInclusoComSucesso();
 
-		CarrinhoPage carrinhoPage= modalProdutoPage.clicarBotaoProceedToCheckout();
+		carrinhoPage= modalProdutoPage.clicarBotaoProceedToCheckout();
 
 		// Teste
 
@@ -208,9 +214,36 @@ public class HomePageTests extends BaseTests{
 		assertThat(Funcoes.removeCifraoDevolveDouble(carrinhoPage.obterTotalTaxasInclusasLateral()), is(esperado_TotalTaxasInclusasLateral));
 		assertThat(Funcoes.removeCifraoDevolveDouble(carrinhoPage.obterTaxasLateral()), is(esperado_taxasLateral));
 		
-		
-		// Asserções JUnit
 				                                
+	}
+	
+	CheckoutPage checkoutPage;
+	
+	@Test
+	public void irParaCheckout_FretePagamentoEnderecoListadoOk() {
+		irParaCarrinho_InformacoesPersistidas();
+		
+		checkoutPage = carrinhoPage.clicarBotaoProceedToCheckout();
+		
+		assertThat(Funcoes.removeCifraoDevolveDouble(checkoutPage.obterTotalTaxasInclusasLateral()), is(esperado_TotalTaxasInclusasLateral));
+		
+		assertTrue(checkoutPage.obterNomeCliente().startsWith(esperado_nomeCliente));
+		
+		checkoutPage.clicarBotaoContinueAddress();
+		
+		String valorShipping = checkoutPage.obterValorShipping();
+		
+		valorShipping = Funcoes.removeTexto(valorShipping, " tax excl.");
+		
+		Double valorShippingDouble = Funcoes.removeCifraoDevolveDouble(valorShipping);
+		
+		assertThat(valorShippingDouble, is(esperado_valorShipping));
+		
+		checkoutPage.clicarBotaoContinueShipping();
+		
+	
+	
+	
 	}
 	
 	
